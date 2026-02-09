@@ -77,6 +77,11 @@
                 
                 <div>
                     <h1 class="text-2xl md:text-3xl font-bold mb-1 font-cinzel uppercase">Paróquia Imaculado Coração de Maria</h1>
+                    <!-- INFORMAÇÕES ADICIONADAS NO HEADER -->
+                    <div class="text-[10px] uppercase tracking-widest opacity-90 mb-2 flex flex-wrap justify-center gap-x-4">
+                        <span>Pároco: <strong>Sebastião Franciulli</strong></span>
+                        <span>Coordenador: <strong>Rogério Marinho</strong></span>
+                    </div>
                     <div id="liturgical-cycle" class="text-xs font-bold tracking-[0.2em] text-[var(--accent)] mb-2 uppercase italic">Carregando Ciclo...</div>
                     <p class="text-sm italic tracking-widest uppercase opacity-80">Escala de Música & Liturgia</p>
                 </div>
@@ -156,17 +161,37 @@
                 <div class="bg-[var(--bg-main)] p-6 rounded-lg border-l-4 border-[var(--header)] shadow-sm transition-colors duration-500">
                     <h3 class="font-cinzel font-bold text-[var(--header)] text-xl mb-4">Recomendações</h3>
                     <ul class="space-y-3 text-sm leading-relaxed text-stone-700">
-                        <li><strong class="text-[var(--header)]">Substituições:</strong> O grupo deve providenciar sua própria substituição com antecedência mínima de 48h.</li>
-                        <li><strong class="text-[var(--header)]">Ensaios:</strong> Recomenda-se ensaio do Salmo e cantos 30 min antes da celebração.</li>
+
+
+
+                        <li><strong class="text-[var(--header)]">•Substituições:</strong> O grupo deve providenciar sua substituição com no mínimo 48h.</li>
+                        <li><strong class="text-[var(--header)]">•Ensaios:</strong> Recomenda-se ensaio do Salmo 30 min antes da celebração.</li>
+                        <li><strong class="text-[var(--header)]">•Liturgia:</strong> As músicas devem seguir rigorosamente o Missal Romano.</li>
+                       <li><strong class="text-[var(--header)]">•Salmistas:</strong> Usar o jaleco quando solicitado e preparar a leitura.</li>
+                       <li><strong class="text-[var(--header)]">•Comunhão:</strong> Os músicos devem comungar ordenadamente após a assembleia.</li>
                     </ul>
                 </div>
 
                 <div class="bg-stone-50 p-6 rounded-lg border-l-4 border-stone-400 shadow-sm">
                     <h3 class="font-cinzel font-bold text-stone-800 text-xl mb-4">Postura e Técnica</h3>
                     <ul class="space-y-3 text-sm leading-relaxed text-stone-700">
-                        <li><strong class="text-stone-900">Som:</strong> Verificar microfones junto à equipe de som antes da Missa.</li>
-                        <li><strong class="text-stone-900">Liturgia:</strong> A música é parte da oração; prepare-se espiritualmente.</li>
+                        <li><strong class="text-stone-900">•Som:</strong> Verificar microfones junto à equipe de som antes da Missa.</li>
+                        <li><strong class="text-stone-900">•Instrumentos:</strong> Devem ser regulados em volume inferior às vozes.</li>
+                        <li><strong class="text-stone-900">•Postura:</strong> Manter o coro organizado e respeitar o silêncio sagrado.</li>
+                        <li><strong class="text-stone-900">•Espiritualidade:</strong> A música é parte da oração; prepare-se espiritualmente.</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                <!-- NOVA COLUNA NO RODAPÉ: CONTATO E ENDEREÇO -->
+                <div class="bg-stone-100 p-6 rounded-lg border-l-4 border-stone-600 shadow-sm">
+                    <h3 class="font-cinzel font-bold text-stone-800 text-xl mb-4 text-center">SALMO 98: CANTAI AO SENHOR DEUS UM CANTO NOVO</h3>
+                    <div class="space-y-3 text-sm leading-relaxed text-stone-700">
+                     
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -201,7 +226,7 @@
             {d:"19/05", t:"Cerco de Jericó 3"}, {d:"20/05", t:"Cerco de Jericó 4"},
             {d:"21/05", t:"Cerco de Jericó 5"}, {d:"22/05", t:"Cerco de Jericó 6"}, {d:"23/05", t:"Cerco de Jericó 7"},
             {d:"22/05", t:"Dia de Santa Rita de Cássia"}, {d:"24/05", t:"Pentecostes"}, {d:"31/05", t:"Santíssima Trindade"},
-	    {d:"31/05", t:"Visitação de Maria"},{d:"04/06", t:"Corpus Christi"},{d:"12/06", t:"Sagrado Coração de Jesus"} ,
+	        {d:"31/05", t:"Visitação de Maria"},{d:"04/06", t:"Corpus Christi"},{d:"12/06", t:"Sagrado Coração de Jesus"} ,
             {d:"13/06", t:"Imaculado Coração de Maria"},{d:"13/06", t:"Dia de Santo Antônio"}, 
             {d:"24/06", t:"Dia de São João Batista"}, {d:"25/06", t:"Dia de Nossa Senhora Rainha da Paz"}, 
             {d:"27/06", t:"Dia de Nossa Senhora do Pepétuo Socorro"},
@@ -335,7 +360,7 @@
                 corpo.innerHTML += `
                     <tr class="${temp.css} border-b border-stone-200 bg-white/40">
                         <td class="p-2 border-r font-bold text-[10px] text-stone-700 bg-white/60 text-center">
-                            S: ${dtFmt(sab)}<br>D: ${dtFmt(dom)}
+                            Sáb: ${dtFmt(sab)}<br>Dom: ${dtFmt(dom)}
                         </td>
                         <td class="p-2 border-r text-left align-top min-w-[180px]">
                             <div id="${idLit}" class="space-y-1 loading-pulse">
