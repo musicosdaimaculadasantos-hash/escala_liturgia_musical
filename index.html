@@ -8,9 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Lora', serif; transition: background-color 0.5s ease; }
+        :root {
+            --header: #14532d;
+            --accent: #22c55e;
+            --bg-main: #f0fdf4;
+        }
+
+        body { font-family: 'Lora', serif; transition: background-color 0.5s ease; background-color: #f5f5f5; }
         h1, h2, h3, .font-cinzel { font-family: 'Cinzel', serif; }
         
+        /* Classes Litúrgicas */
         .lit-verde { --bg-main: #f0fdf4; --header: #14532d; --accent: #22c55e; }
         .lit-roxo { --bg-main: #faf5ff; --header: #4c1d95; --accent: #a855f7; }
         .lit-branco { --bg-main: #fffcf0; --header: #78350f; --accent: #d4af37; }
@@ -30,6 +37,7 @@
             border: 1px solid rgba(0,0,0,0.1);
         }
 
+        /* Cores dos Grupos */
         .bg-marcio { background-color: #0f766e !important; color: #fafee2 !important; }
         .bg-marco { background-color: #0369a1 !important; color: white !important; }
         .bg-casais { background-color: #1e40af !important; color: white !important; }
@@ -40,22 +48,26 @@
         .bg-eac { background-color: #701a75 !important; color: white !important; }
 
         .tab-active { background-color: var(--header) !important; color: white !important; }
-        .info-card { background-color: white; border: 1px solid var(--header); border-left: 8px solid var(--header); }
-
+        
         .loading-pulse { animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
         @media print {
             .no-print { display: none !important; }
             body { background: white !important; padding: 0; }
-            .religious-border { border: 2px solid #000; outline: none; }
+            .religious-border { border: 2px solid #000; outline: none; margin: 0; }
+            .max-w-\[1550px\] { max-width: 100% !important; border-radius: 0 !important; }
         }
+
+        #month-tabs::-webkit-scrollbar { height: 4px; }
+        #month-tabs::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
     </style>
 </head>
-<body id="main-body" class="p-2 md:p-6 lit-verde">
+<body id="main-body" class="p-2 md:p-6 transition-colors duration-700">
 
     <div class="max-w-[1550px] mx-auto bg-white shadow-2xl rounded-sm religious-border overflow-hidden">
         
+        <!-- HEADER -->
         <header class="bg-[var(--header)] text-white p-6 text-center border-b-4 border-[var(--accent)] transition-colors duration-500">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="text-center md:text-left">
@@ -64,9 +76,9 @@
                 </div>
                 
                 <div>
-                    <h1 class="text-2xl md:text-4xl font-bold mb-1 font-cinzel uppercase text-center">Paróquia Imaculado Coração de Maria</h1>
-                    <div id="liturgical-cycle" class="text-xs md:text-sm font-bold tracking-[0.2em] text-[var(--accent)] mb-2 uppercase italic">Carregando Ciclo...</div>
-                    <p class="text-sm italic tracking-widest uppercase opacity-80 text-center">Escala de Música & Liturgia</p>
+                    <h1 class="text-2xl md:text-3xl font-bold mb-1 font-cinzel uppercase">Paróquia Imaculado Coração de Maria</h1>
+                    <div id="liturgical-cycle" class="text-xs font-bold tracking-[0.2em] text-[var(--accent)] mb-2 uppercase italic">Carregando Ciclo...</div>
+                    <p class="text-sm italic tracking-widest uppercase opacity-80">Escala de Música & Liturgia</p>
                 </div>
 
                 <div class="text-center md:text-right">
@@ -80,13 +92,30 @@
             </div>
         </header>
 
-        <nav class="no-print bg-stone-100 border-b overflow-x-auto flex">
-            <div id="month-tabs" class="flex w-full justify-between"></div>
+        <!-- NOVO: BARRA DE SIGNIFICADO LITÚRGICO -->
+        <div id="liturgical-info-bar" class="bg-[var(--bg-main)] p-4 border-b border-stone-200 flex flex-col md:flex-row items-center gap-4 transition-colors duration-500">
+            <div class="flex items-center gap-3 border-r-0 md:border-r border-stone-300 pr-0 md:pr-6">
+                <div id="lit-color-circle" class="w-12 h-12 rounded-full border-4 border-white shadow-sm flex-shrink-0 bg-[var(--accent)]"></div>
+                <div>
+                    <p class="text-[10px] uppercase font-bold text-stone-500">Tempo Atual</p>
+                    <p id="lit-tempo-nome" class="text-sm font-bold text-[var(--header)] uppercase font-cinzel">Tempo Comum</p>
+                </div>
+            </div>
+            <div class="flex-1">
+                <p class="text-[10px] uppercase font-bold text-stone-500 mb-1">Significado & Cor</p>
+                <p id="lit-tempo-significado" class="text-xs text-stone-600 italic leading-relaxed">...</p>
+            </div>
+        </div>
+
+        <!-- NAVEGAÇÃO -->
+        <nav class="no-print bg-stone-100 border-b overflow-x-auto">
+            <div id="month-tabs" class="flex min-w-max md:w-full justify-between"></div>
         </nav>
 
         <div class="p-4 md:p-8">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 
+                <!-- TABELA -->
                 <div class="lg:col-span-3">
                     <div class="flex justify-between items-end mb-4 border-b pb-2 border-stone-200">
                         <h2 id="current-month-title" class="text-2xl font-bold text-[var(--header)] font-cinzel uppercase">Janeiro</h2>
@@ -97,7 +126,7 @@
                         <table class="w-full border-collapse bg-white">
                             <thead class="bg-stone-50 text-[10px] uppercase text-stone-600 font-bold">
                                 <tr>
-                                    <th class="p-3 border-b border-r w-24">Data</th>
+                                    <th class="p-3 border-b border-r w-20">Data</th>
                                     <th class="p-3 border-b border-r text-left">Liturgia das Leituras</th>
                                     <th class="p-3 border-b border-r">Sáb (16h)</th>
                                     <th class="p-3 border-b border-r">Dom (07:30)</th>
@@ -111,6 +140,7 @@
                     </div>
                 </div>
 
+                <!-- DATAS -->
                 <div class="lg:col-span-1">
                     <section class="bg-stone-50 p-4 rounded-lg border-2 border-dashed border-stone-300 min-h-[400px]">
                         <h3 class="font-cinzel font-bold text-[var(--header)] mb-4 border-b pb-2 flex items-center gap-2">
@@ -120,35 +150,27 @@
                     </section>
                 </div>
             </div>
-        </div>
-    </div>
 
-  <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 border-t-2 border-stone-200 pt-8">
-                <div class="bg-[var(--bg-main)] p-6 rounded-lg border-l-4 border-[var(--header)] shadow-sm">
-                    <h3 class="font-cinzel font-bold text-[var(--header)] text-xl mb-4">Recomendações Importantes</h3>
-                    <ul class="space-y-4 text-sm leading-relaxed text-stone-700">
-                        <li><strong class="text-[var(--header)]">Substituições:</strong> Em caso de impossibilidade, o grupo/cantor deve providenciar sua própria substituição com antecedência mínima de 48h.</li>
-                        <li><strong class="text-[var(--header)]">Ensaios:</strong> Recomenda-se o ensaio do Salmo e cantos específicos com pelo menos 30 minutos antes de cada celebração.</li>
-                        <li><strong class="text-[var(--header)]">Afinidade Litúrgica:</strong> Consultar sempre a liturgia do dia para escolha de cantos adequados ao tempo litúrgico.</li>
+            <!-- RODAPÉ -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 border-t-2 border-stone-200 pt-8">
+                <div class="bg-[var(--bg-main)] p-6 rounded-lg border-l-4 border-[var(--header)] shadow-sm transition-colors duration-500">
+                    <h3 class="font-cinzel font-bold text-[var(--header)] text-xl mb-4">Recomendações</h3>
+                    <ul class="space-y-3 text-sm leading-relaxed text-stone-700">
+                        <li><strong class="text-[var(--header)]">Substituições:</strong> O grupo deve providenciar sua própria substituição com antecedência mínima de 48h.</li>
+                        <li><strong class="text-[var(--header)]">Ensaios:</strong> Recomenda-se ensaio do Salmo e cantos 30 min antes da celebração.</li>
                     </ul>
                 </div>
 
                 <div class="bg-stone-50 p-6 rounded-lg border-l-4 border-stone-400 shadow-sm">
-                    <h3 class="font-cinzel font-bold text-stone-800 text-xl mb-4">Orientações Técnicas</h3>
-                    <ul class="space-y-4 text-sm leading-relaxed text-stone-700">
-                        <li><strong class="text-stone-900">Microfones:</strong> Verificar a altura e o volume dos microfones junto à equipe de som.</li>
-                        <li><strong class="text-stone-900">Postura:</strong> Manter a sobriedade e o recolhimento adequados ao serviço do altar.</li>
-                        <li><strong class="text-stone-900">Oração:</strong> A música na liturgia é oração cantada; prepare o espírito antes da voz.</li>
+                    <h3 class="font-cinzel font-bold text-stone-800 text-xl mb-4">Postura e Técnica</h3>
+                    <ul class="space-y-3 text-sm leading-relaxed text-stone-700">
+                        <li><strong class="text-stone-900">Som:</strong> Verificar microfones junto à equipe de som antes da Missa.</li>
+                        <li><strong class="text-stone-900">Liturgia:</strong> A música é parte da oração; prepare-se espiritualmente.</li>
                     </ul>
                 </div>
             </div>
-
-            <div class="mt-8 text-center">
-                <p class="font-cinzel text-xl text-[var(--header)] italic">"Cantai ao Senhor um cântico novo"</p>
-            </div>
         </div>
     </div>
-
 
     <script>
         const mesesNomes = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -156,6 +178,15 @@
             0: "Santíssimo Nome de Jesus", 1: "Santíssima Família", 2: "São José", 3: "Eucaristia e Espírito Santo",
             4: "Virgem Maria", 5: "Sagrado Coração de Jesus", 6: "Preciosíssimo Sangue", 7: "Vocações",
             8: "Bíblia", 9: "Missões e Santo Rosário", 10: "Fiéis Defuntos", 11: "Advento e Nascimento"
+        };
+
+        const significadosTempos = {
+            "Comum": { cor: "Verde", sig: "Tempo de esperança e crescimento. Simboliza a vida da Igreja que floresce e a caminhada diária do cristão sob a guia do Espírito." },
+            "Quaresma": { cor: "Roxo", sig: "Tempo de penitência, reflexão e conversão. Quarenta dias de preparação espiritual para a grande festa da Páscoa do Senhor." },
+            "Páscoa": { cor: "Branco/Dourado", sig: "A maior festa cristã! Celebra a vitória de Cristo sobre a morte. Tempo de imensa alegria, luz e renovação da fé." },
+            "Advento": { cor: "Roxo", sig: "Expectativa e vigilância. Preparamos o coração para a vinda do Salvador, tanto no Natal quanto em Sua vinda gloriosa no fim dos tempos." },
+            "Natal": { cor: "Branco", sig: "Celebramos o mistério da Encarnação. Deus se fez homem e habitou entre nós para nos salvar." },
+            "Pentecostes": { cor: "Vermelho", sig: "Celebra a vinda do Espírito Santo sobre os Apóstolos. Cor do fogo, da caridade e do testemunho dos mártires." }
         };
 
         const datasOficiais = [
@@ -204,38 +235,27 @@
         const liturgiaCache = {};
 
         function atualizarCicloLiturgico(ano) {
-            // Ciclo A: 2023, 2026 | Ciclo B: 2024 | Ciclo C: 2025
             const resto = (ano - 2023) % 3;
-            let ciclo = "";
-            let evangelista = "";
-            
-            if (resto === 0) { ciclo = "Ano A"; evangelista = "São Mateus"; }
-            else if (resto === 1) { ciclo = "Ano B"; evangelista = "São Marcos"; }
-            else { ciclo = "Ano C"; evangelista = "São Lucas"; }
-            
-            document.getElementById('liturgical-cycle').innerText = `${ciclo} — Evangelista ${evangelista}`;
+            let ciclo = resto === 0 ? "Ano A" : (resto === 1 ? "Ano B" : "Ano C");
+            let ev = resto === 0 ? "Mateus" : (resto === 1 ? "Marcos" : "Lucas");
+            document.getElementById('liturgical-cycle').innerText = `${ciclo} — Evangelista São ${ev}`;
         }
 
         async function fetchLiturgiaCompleta(date) {
             const dateStr = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
             if (liturgiaCache[dateStr]) return liturgiaCache[dateStr];
-
             try {
                 const res = await fetch(`https://liturgia.up.railway.app/?dia=${date.getDate()}&mes=${date.getMonth() + 1}&ano=${date.getFullYear()}`);
                 const data = await res.json();
-                
                 const result = {
-                    leitura1: data.primeiraLeitura?.referencia || "Consultar folheto",
-                    leitura2: data.segundaLeitura?.referencia || "Não há 2ª Leitura",
+                    leitura1: data.primeiraLeitura?.referencia || "Folheto",
+                    leitura2: data.segundaLeitura?.referencia || "Não há",
                     salmoRef: data.salmo?.referencia || "Salmo",
-                    salmoRefrão: data.salmo?.refrao || "...",
+                    salmoRefrao: data.salmo?.refrao || "...",
                     evangelho: data.evangelho?.referencia || "Evangelho"
                 };
-                liturgiaCache[dateStr] = result;
-                return result;
-            } catch (e) {
-                return { leitura1: "-", leitura2: "-", salmoRef: "-", salmoRefrão: "-", evangelho: "-" };
-            }
+                liturgiaCache[dateStr] = result; return result;
+            } catch (e) { return { leitura1: "-", leitura2: "-", salmoRef: "-", salmoRefrao: "-", evangelho: "-" }; }
         }
 
         function getPascoa(year) {
@@ -249,58 +269,27 @@
             return new Date(year, pMonth - 1, pDay);
         }
 
-        function getNomeDomingo(date) {
-            const y = date.getFullYear();
+        function getInfoLiturgica(date) {
             const time = date.getTime();
+            const y = date.getFullYear();
             const pascoa = getPascoa(y);
             const cinzas = new Date(pascoa); cinzas.setDate(pascoa.getDate() - 46);
             const pentecostes = new Date(pascoa); pentecostes.setDate(pascoa.getDate() + 50);
             const natal = new Date(y, 11, 25);
             const advento = new Date(y, 11, 25 - (natal.getDay() || 7) - 21);
 
-            if (date.getMonth() === 0 && date.getDate() <= 6) return "EPIFANIA DO SENHOR";
-            if (date.getMonth() === 0 && date.getDate() <= 13) return "BATISMO DO SENHOR";
+            if ((date.getMonth() === 11 && date.getDate() >= 25) || (date.getMonth() === 0 && date.getDate() <= 11)) 
+                return { css: "lit-branco", tempo: "Natal" };
+            if (time >= advento.getTime() && time < natal.getTime()) 
+                return { css: "lit-roxo", tempo: "Advento" };
+            if (time >= cinzas.getTime() && time < pascoa.getTime()) 
+                return { css: "lit-roxo", tempo: "Quaresma" };
+            if (time >= pascoa.getTime() && time < pentecostes.getTime()) 
+                return { css: "lit-branco", tempo: "Páscoa" };
+            if (time === pentecostes.getTime()) 
+                return { css: "lit-vermelho", tempo: "Pentecostes" };
             
-            if (time >= cinzas.getTime() && time < pascoa.getTime()) {
-                const diff = Math.floor((time - cinzas.getTime()) / (1000 * 60 * 60 * 24));
-                const sem = Math.ceil(diff / 7);
-                if (sem === 6) return "DOMINGO DE RAMOS";
-                return `${sem}º DOMINGO DA QUARESMA`;
-            }
-
-            if (time >= pascoa.getTime() && time < pentecostes.getTime()) {
-                const diff = Math.floor((time - pascoa.getTime()) / (1000 * 60 * 60 * 24));
-                const sem = Math.ceil(diff / 7) || 1;
-                if (sem === 1) return "DOMINGO DA RESSURREIÇÃO";
-                if (time === pentecostes.getTime()) return "DOMINGO DE PENTECOSTES";
-                return `${sem}º DOMINGO DA PÁSCOA`;
-            }
-
-            if (time >= advento.getTime() && time < natal.getTime()) {
-                const diff = Math.floor((time - advento.getTime()) / (1000 * 60 * 60 * 24));
-                return `${Math.ceil(diff / 7)}º DOMINGO DO ADVENTO`;
-            }
-
-            const batismo = new Date(y, 0, 11);
-            const diffTotal = Math.floor((time - batismo.getTime()) / (1000 * 60 * 60 * 24));
-            let semComum = Math.ceil(diffTotal / 7) + 1;
-            return `${semComum}º DOMINGO DO TEMPO COMUM`;
-        }
-
-        function getTempoLiturgico(date) {
-            const time = date.getTime();
-            const y = date.getFullYear();
-            const pascoa = getPascoa(y);
-            const cinzas = new Date(pascoa); cinzas.setDate(pascoa.getDate() - 46);
-            const pentecostes = new Date(pascoa); pentecostes.setDate(pascoa.getDate() + 50);
-            const natal = new Date(y, 11, 25);
-            const advento = new Date(y, 11, 25 - (natal.getDay() || 7) - 21);
-
-            if ((date.getMonth() === 11 && date.getDate() >= 25) || (date.getMonth() === 0 && date.getDate() <= 11)) return { css: "lit-branco" };
-            if (time >= advento.getTime() && time < natal.getTime()) return { css: "lit-roxo" };
-            if (time >= cinzas.getTime() && time < pascoa.getTime()) return { css: "lit-roxo" };
-            if (time >= pascoa.getTime() && time < pentecostes.getTime()) return { css: "lit-branco" };
-            return { css: "lit-verde" };
+            return { css: "lit-verde", tempo: "Comum" };
         }
 
         function getTag(name) {
@@ -314,9 +303,15 @@
             document.getElementById('current-month-title').innerText = mesesNomes[mesAtualIdx];
             document.getElementById('liturgical-name').innerText = mesLiturgicoDedicado[mesAtualIdx];
 
+            // Atualiza Info Bar (usa o meio do mês como referência)
+            const info = getInfoLiturgica(new Date(anoAtual, mesAtualIdx, 15));
+            document.getElementById('main-body').className = "p-2 md:p-6 " + info.css;
+            document.getElementById('lit-tempo-nome').innerText = "Tempo " + info.tempo;
+            document.getElementById('lit-tempo-significado').innerText = `Cor ${significadosTempos[info.tempo].cor}: ${significadosTempos[info.tempo].sig}`;
+
             const tabDiv = document.getElementById('month-tabs');
             tabDiv.innerHTML = mesesNomes.map((n, i) => `
-                <button onclick="mesAtualIdx=${i}; render()" class="flex-1 py-3 text-[9px] font-bold uppercase border-r border-stone-200 ${mesAtualIdx === i ? 'tab-active' : 'text-stone-500 hover:bg-stone-200'}">
+                <button onclick="mesAtualIdx=${i}; render()" class="flex-1 py-3 px-2 text-[10px] font-bold uppercase border-r border-stone-200 ${mesAtualIdx === i ? 'tab-active' : 'text-stone-500 hover:bg-stone-200'}">
                     ${n.substring(0,3)}
                 </button>
             `).join('');
@@ -333,8 +328,7 @@
             for (let i = 0; i < domingos.length; i++) {
                 const dom = domingos[i];
                 const sab = new Date(dom); sab.setDate(dom.getDate() - 1);
-                const temp = getTempoLiturgico(dom);
-                const nomeDom = getNomeDomingo(dom);
+                const temp = getInfoLiturgica(dom);
                 const dtFmt = (dt) => `${dt.getDate().toString().padStart(2,'0')}/${(dt.getMonth()+1).toString().padStart(2,'0')}`;
                 const idLit = `lit-${dtFmt(dom).replace('/','-')}`;
                 
@@ -343,8 +337,7 @@
                         <td class="p-2 border-r font-bold text-[10px] text-stone-700 bg-white/60 text-center">
                             S: ${dtFmt(sab)}<br>D: ${dtFmt(dom)}
                         </td>
-                        <td class="p-2 border-r text-left align-top">
-                            <div class="text-[9px] font-cinzel font-bold text-stone-900 border-b border-stone-300 pb-1 mb-1">${nomeDom}</div>
+                        <td class="p-2 border-r text-left align-top min-w-[180px]">
                             <div id="${idLit}" class="space-y-1 loading-pulse">
                                 <div class="h-3 w-3/4 bg-stone-200 rounded"></div>
                                 <div class="h-3 w-1/2 bg-stone-200 rounded"></div>
@@ -363,13 +356,11 @@
                     if (el) {
                         el.classList.remove('loading-pulse');
                         el.innerHTML = `
-                            <div class="grid grid-cols-2 gap-x-2 text-[9px]">
-                                <p class="text-stone-600"><span class="font-bold text-red-800">1ª L:</span> ${l.leitura1}</p>
-                                <p class="text-stone-600"><span class="font-bold text-red-800">Sal:</span> ${l.salmoRef}</p>
-                                <p class="text-stone-600"><span class="font-bold text-red-800">2ª L:</span> ${l.leitura2}</p>
-                                <p class="text-stone-600"><span class="font-bold text-red-800">Ev:</span> ${l.evangelho}</p>
+                            <div class="grid grid-cols-1 gap-x-2 text-[9px] leading-tight">
+                                <p class="text-stone-600"><span class="font-bold text-red-800">1ªL:</span> ${l.leitura1} | <span class="font-bold text-red-800">Sal:</span> ${l.salmoRef}</p>
+                                <p class="text-stone-600"><span class="font-bold text-red-800">2ªL:</span> ${l.leitura2} | <span class="font-bold text-red-800">Ev:</span> ${l.evangelho}</p>
                             </div>
-                            <p class="text-[9px] italic text-stone-500 mt-1 leading-tight"><span class="font-bold not-italic">R:</span> "${l.salmoRefrão}"</p>
+                            <p class="text-[9px] italic text-stone-500 mt-1 leading-tight border-t border-stone-100 pt-1">"${l.salmoRefrao}"</p>
                         `;
                     }
                 });
@@ -381,7 +372,7 @@
                 .sort((a, b) => parseInt(a.d.substring(0, 2)) - parseInt(b.d.substring(0, 2)));
 
             listDiv.innerHTML = eventosDoMes.length > 0 ? eventosDoMes.map(item => `
-                <div class="p-2 bg-white border-l-4 ${item.t.includes("Pe ") ? 'border-amber-500' : 'border-[var(--header)]'} shadow-sm rounded-r">
+                <div class="p-2 bg-white border-l-4 border-[var(--header)] shadow-sm rounded-r">
                     <p class="text-[10px] font-bold text-stone-500">${item.d}</p>
                     <p class="text-[11px] text-stone-700 font-medium">${item.t}</p>
                 </div>
@@ -393,7 +384,7 @@
             render();
         }
 
-        render();
+        window.onload = render;
     </script>
 </body>
 </html>
